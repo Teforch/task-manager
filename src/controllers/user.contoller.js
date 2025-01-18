@@ -1,25 +1,52 @@
 import pool from "../../db.js";
+import bcrypt from "bcrypt";
 
 class UserController {
   async getUsers(req, res) {
-    const { rows } = await pool.query("SELECT * FROM users");
-    res.render('users', { users: rows });
-  }
-
-  async getUser(id) {
-    const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [
-      id,
-    ]);
-    return rows[0];
+    const { rows } = await pool.query("SELECT * FROM users ORDER BY id");
+    res.render("users", { users: rows, isGuest: req.isGuest });
   }
 
   async createUser(req, res) {
-    const { first_name, last_name, password, email } = req.body;
-    const { rows } = await pool.query(
-      "INSERT INTO users (first_name, last_name, password, email) VALUES ($1, $2, $3, $4) RETURNING *",
-      [first_name, last_name, password, email],
+    const { name, surname, password, email } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await pool.query(
+      "INSERT INTO users (first_name, last_name, password, email) VALUES ($1, $2, $3, $4)",
+      [name, surname, hashedPassword, email],
     );
-    res.json(rows[0]);
+    req.flash("success_msg", "User created successfully");
+    res.redirect("/");
+  }
+
+  async deleteUser(req, res) {
+    const { id } = req.params;
+    req.logout(req.user, (err) => {
+      if (err) return next(err);
+    });
+    const { rows } = await pool.query("DELETE FROM users WHERE id = $1", [id]);
+    res.redirect("/users");
+  }
+
+  async updateUser(req, res) {
+    const { id } = req.params;
+    const { name, surname, password, email } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await pool.query(
+      "UPDATE users SET first_name = $1, last_name = $2, password = $3, email = $4 WHERE id = $5",
+      [name, surname, hashedPassword, email, id],
+    );
+    req.flash("success_msg", "User updated successfully");
+    res.redirect("/users");
+  }
+
+  registerPage(req, res) {
+    res.render("register", { isGuest: req.isGuest });
+  }
+
+  async editPage(req, res) {
+    const { id } = req.params;
+    const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+    res.render("edit", { user: rows[0], isGuest: req.isGuest });
   }
 }
 
