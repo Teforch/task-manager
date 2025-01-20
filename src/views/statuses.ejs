@@ -22,25 +22,29 @@
                     <%= messages.error_msg %>
                  </div>
                 <% } %>
-                <h1 class="mb-4">Usesrs</h1>
+                <h1 class="mb-4">Statuses</h1>
+                <style>
+                    .btn-custom {
+                        width: 10%;
+                    }
+                </style>
+                <button class="btn btn-primary btn-custom"><a class="nav-link px-2 link-light" href="/statuses/new">Add new</a"></button>
                 <table class="table table-striped">
                     <thead>
                       <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Full name</th>
-                        <th scope="col">email</th>
+                        <th scope="col">name</th>
                         <th scope="col">actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                        <% users.forEach(row => { %>
+                        <% statuses.forEach(row => { %>
                             <tr>
                                 <th scope="row"><%= row.id %> </th>
-                                <td><%= `${row.first_name} ${row.last_name}` %> </td>
-                                <td><%= row.email %> </td>
+                                <td><%= row.name %> </td>
                                 <td class="d-flex gap-2">
-                                    <button class="btn btn-primary"><a class="nav-link px-2 link-light" href="/users/<%= row.id %>/edit">Change</a></button>
-                                    <form action="/users/<%= row.id %>?_method=DELETE" method="POST">
+                                    <button class="btn btn-primary"><a class="nav-link px-2 link-light" href="/statuses/<%= row.id %>/edit">Change</a></button>
+                                    <form action="/statuses/<%= row.id %>?_method=DELETE" method="POST">
                                         <button class="btn btn-danger">Delete</button>
                                     </form>
                                 </td>

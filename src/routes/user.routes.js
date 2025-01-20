@@ -2,7 +2,7 @@ import express from "express";
 import UserController from "../controllers/user.contoller.js";
 import isGuestMiddleware from "../middlewares/isGuest.middleware.js";
 import userActionsMiddleware from "../middlewares/userActions.middleware.js";
-import validationMiddleware from "../middlewares/validation.middleware.js";
+import validationMiddleware from "../middlewares/validationUser.middleware.js";
 
 const router = express.Router();
 

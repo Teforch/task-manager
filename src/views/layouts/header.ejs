@@ -8,6 +8,11 @@
     <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
       <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
       <li><a href="/users" class="nav-link px-2">Users</a></li>
+      <% if (!isGuest) { %>
+        <li><a href="/statuses" class="nav-link px-2">Statuses</a></li>
+        <li><a href="/users" class="nav-link px-2">Labels</a></li>
+        <li><a href="/users" class="nav-link px-2">Tasks</a></li>
+      <% } %>
     </ul>
     <% if (isGuest) { %>
      <div class="col-md-3 text-end">

@@ -2,6 +2,7 @@ import express from "express";
 import userRoutes from "./src/routes/user.routes.js";
 import sessionRoutes from "./src/routes/session.routes.js";
 import mainRoutes from "./src/routes/main.routes.js";
+import taskStatusRoutes from "./src/routes/taskStatus.routes.js";
 import "dotenv/config";
 import flash from "express-flash";
 import session from "express-session";
@@ -40,6 +41,7 @@ app.set("views", "./src/views");
 app.use("/", userRoutes);
 app.use("/", sessionRoutes);
 app.use("/", mainRoutes);
+app.use('/', taskStatusRoutes);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
