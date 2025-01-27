@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <%- include('layouts/header', { isGuest: isGuest}) %>
+                <%- include('../layouts/header', { isGuest: isGuest}) %>
                 <% if (messages.success_msg) { %>
                  <div class="alert alert-success" role="alert">
                     <%= messages.success_msg %>
@@ -22,29 +22,40 @@
                     <%= messages.error_msg %>
                  </div>
                 <% } %>
-                <h1 class="mb-4">Statuses</h1>
+                
+                <h1 class="mb-4">Tasks</h1>
                 <style>
                     .btn-custom {
                         width: 10%;
                     }
                 </style>
-                <button class="btn btn-primary btn-custom"><a class="nav-link px-2 link-light" href="/statuses/new">Add new</a"></button>
+                <div>
+                    <button class="btn btn-primary"><a class="nav-link px-2 link-light" href="/tasks/new">Add New</a></button>
+                </div>
                 <table class="table table-striped">
                     <thead>
                       <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">name</th>
-                        <th scope="col">actions</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Creator</th>
+                        <th scope="col">Executor</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                        <% statuses.forEach(row => { %>
+                        <% tasks.forEach(row => { %>
                             <tr>
                                 <th scope="row"><%= row.id %> </th>
-                                <td><%= row.name %> </td>
+                                <td><a href="/tasks/<%= row.id %>"><%= row.name %></a> </td>
+                                <td><%= row.status_name %> </td>
+                                <td><%= row.first_name %> <%= row.last_name %> </td>
+                                <td><%= row.exc_first_name %> <%= row.exc_last_name %> </td>
+                                <td><%= row.created_at %> </td>
                                 <td class="d-flex gap-2">
-                                    <button class="btn btn-primary"><a class="nav-link px-2 link-light" href="/statuses/<%= row.id %>/edit">Change</a></button>
-                                    <form action="/statuses/<%= row.id %>?_method=DELETE" method="POST">
+                                    <button class="btn btn-primary"><a class="nav-link px-2 link-light" href="/tasks/<%= row.id %>/edit">Change</a></button>
+                                    <form action="/tasks/<%= row.id %>?_method=DELETE" method="POST">
                                         <button class="btn btn-danger">Delete</button>
                                     </form>
                                 </td>

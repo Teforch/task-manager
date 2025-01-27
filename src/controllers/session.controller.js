@@ -2,7 +2,7 @@ import passport from "passport";
 
 class SessionController {
   loginPage(req, res) {
-    res.render("login", { isGuest: req.isGuest });
+    res.render("users/login", { isGuest: req.isGuest });
   }
 
   deleteSession(req, res) {

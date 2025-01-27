@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <%- include('layouts/header', { isGuest: isGuest }) %>
+                <%- include('../layouts/header', { isGuest: isGuest }) %>
                 <% if (messages.success_msg) { %>
                  <div class="alert alert-success" role="alert">
                     <%= messages.success_msg %>
@@ -22,11 +22,35 @@
                     <%= messages.error_msg %>
                  </div>
                 <% } %>
-                <h1 class="mb-4">Create new status</h1>
-                <form action="/statuses" method="POST">
+                <h1 class="mb-4">Create new Task</h1>
+                <form action="/tasks" method="POST">
                     <label for="name">Name</label>
                     <input type="text" id="name" class="form-control" name="name" required><br>
 
+                    <label for="description">Description</label>
+                    <input type="text" id="description" class="form-control" name="description"><br>
+                    
+                    <div class="form-group">
+                        <label for="status">Task status</label>
+                        <select class="form-control" id="status" name="status" required>
+                            <option value=""></option>
+                          <% statuses.forEach(status => { %>
+                            <option value="<%= status.id %>"><%= status.name %></option>
+                          <% }) %>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="executor">Executor</label>
+                        <select class="form-control" id="executor" name="executor" required>
+                            <option value=""></option>
+                          <% users.forEach(user => { %>
+                            <option value="<%= user.id %>"><%= user.first_name %> <%= user.last_name %></option>
+                          <% }) %>
+                        </select>
+                    </div>
+
+                    
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>

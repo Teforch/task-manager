@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 class UserController {
   async getUsers(req, res) {
     const { rows } = await pool.query("SELECT * FROM users ORDER BY id");
-    res.render("users", { users: rows, isGuest: req.isGuest });
+    res.render("users/users", { users: rows, isGuest: req.isGuest });
   }
 
   async createUser(req, res) {
@@ -19,12 +19,18 @@ class UserController {
   }
 
   async deleteUser(req, res) {
-    const { id } = req.params;
-    req.logout(req.user, (err) => {
-      if (err) return next(err);
-    });
-    const { rows } = await pool.query("DELETE FROM users WHERE id = $1", [id]);
-    res.redirect("/users");
+    try {
+      const { id } = req.params;
+      req.logout(req.user, (err) => {
+        if (err) return next(err);
+      });
+
+      await pool.query("DELETE FROM users WHERE id = $1", [id]);
+      res.redirect("/users");
+    } catch {
+      req.flash("error_msg", "User is used in tasks");
+      res.redirect("/users");
+    }
   }
 
   async updateUser(req, res) {
@@ -40,12 +46,14 @@ class UserController {
   }
 
   registerPage(req, res) {
-    res.render("register", { isGuest: req.isGuest });
+    res.render("users/register", { isGuest: req.isGuest });
   }
 
   async editPage(req, res) {
     const { id } = req.params;
-    const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+    const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [
+      id,
+    ]);
     res.render("edit", { user: rows[0], isGuest: req.isGuest });
   }
 }
